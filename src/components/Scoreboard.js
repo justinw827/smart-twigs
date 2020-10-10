@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import PlayerScore from "./PlayerScore"
 
@@ -8,12 +8,14 @@ const Scoreboard = (props) => {
     const [playerTwoScore, setPlayerTwoScore] = useState(0)
     const [server, setServer] = useState(props.server)
 
-    // TODO find out how hooks are messing with score count
-    const checkWinner = (score, name) => {
-        console.log(playerOneScore + " " + playerTwoScore);
-        console.log(Math.abs(playerOneScore - playerTwoScore));
-        if (score >= 10 && Math.abs(playerOneScore - playerTwoScore) > 1) {
-            setWinner(name)
+    const checkWinner = () => {
+        const topScore = Math.max(playerOneScore, playerTwoScore)
+        if (topScore >= 10 && Math.abs(playerOneScore - playerTwoScore) > 1) {
+            if (playerOneScore > playerTwoScore) {
+                setWinner(props.playersList[0])
+            } else {
+                setWinner(props.playersList[1])
+            }
             // Add win to leaderboard
         }
 
@@ -29,23 +31,27 @@ const Scoreboard = (props) => {
     const handlePlayerOneScore = (scoreIn) => {
         setPlayerOneScore(scoreIn)
         const name = props.playersList[0]
-        checkWinner(scoreIn, name)
     }
 
     const handlePlayerTwoScore = (scoreIn) => {
         setPlayerTwoScore(scoreIn)
         const name = props.playersList[1]
-        checkWinner(scoreIn, name)
     }
+
+    useEffect(() => {
+        checkWinner()
+    }, [playerOneScore, playerTwoScore])
 
     return (
         <>
             <h1>Scoreboard</h1>
-            <h2>Serving: {props.playersList[parseInt(server)]}</h2>
             {winner === "" ? 
-                <div style={{display: "flex", justifyContent: "space-evenly"}}>
-                    <PlayerScore name={props.playersList[0]} score={playerOneScore} handleScore={handlePlayerOneScore} />
-                    <PlayerScore name={props.playersList[1]} score={playerTwoScore} handleScore={handlePlayerTwoScore} />
+                <div>
+                    <h2>Serving: {props.playersList[parseInt(server)]}</h2>
+                    <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+                      <PlayerScore name={props.playersList[0]} score={playerOneScore} handleScore={handlePlayerOneScore} />
+                      <PlayerScore name={props.playersList[1]} score={playerTwoScore} handleScore={handlePlayerTwoScore} />
+                    </div>
                 </div>
                 :
                 <div>
