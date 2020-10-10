@@ -16,13 +16,9 @@ const RegisterForm = (props) => {
     const handleSubmit = (event) => {
         event.preventDefault()
         const valid = validateNames()
-        if (valid) {
-            setError(false)
-        } else {
+        if (!valid) {
             setError(true)
-        }
-        
-        if (!error && valid) { // Fix having to double click submit after error appears to proceed
+        } else {
             props.handleSetPlayers([player1, player2])
             props.handleLoginStatus(true)
         }

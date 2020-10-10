@@ -23,13 +23,10 @@ const ExistingUsersForm = (props) => {
         event.preventDefault()
         validateNames()
         const valid = validateNames()
-        if (valid) {
-            setError(false)
-        } else {
+        
+        if (!valid) {
             setError(true)
-        }
-
-        if (!error && valid) { // Fix having to double click submit in some cases
+        } else {
             props.handleSetPlayers([player1, player2])
             props.handleLoginStatus(true)
         }

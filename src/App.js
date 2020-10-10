@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import RegisterForm from './components/RegisterForm'
 import Scoreboard from './components/Scoreboard'
@@ -10,7 +10,7 @@ function App() {
   // TODO get users from backend
   const [players, setPlayers] = useState(["", ""])
   const [existingPlayers, setExistingPlayers] = useState(["Justin", "Oscar", "Bob", "Mary"])
-  const [loginStatus, setLoginStatus] = useState(false)
+  const [loginStatus, setLoginStatus] = useState()
   const [server, setServer] = useState("0")
 
   const handleLoginStatus = (statusIn) => {
